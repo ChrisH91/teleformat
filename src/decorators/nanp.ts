@@ -1,17 +1,22 @@
 import IDecorator from "./decorator";
 
-const nanp: IDecorator = {
+const decorator: IDecorator = {
   decorate(phoneNumber: string) {
+    let localNumber;
+
     if (phoneNumber.length < 4) {
-      return `+1 ${phoneNumber.substring(1)}`;
+      localNumber = `${phoneNumber.substring(1)}`;
+    } else if (phoneNumber.length < 7) {
+      localNumber = `(${phoneNumber.substring(1, 4)}) ${phoneNumber.substring(4)}`;
+    } else {
+      localNumber = `(${phoneNumber.substring(1, 4)}) ${phoneNumber.substring(4, 7)}-${phoneNumber.substring(7)}`;
     }
 
-    if (phoneNumber.length < 7) {
-      return `+1 (${phoneNumber.substring(1, 4)}) ${phoneNumber.substring(4)}`;
-    }
-
-    return `+1 (${phoneNumber.substring(1, 4)}) ${phoneNumber.substring(4, 7)}-${phoneNumber.substring(7)}`;
+    return {
+      local: localNumber,
+      international: `+1 ${localNumber}`,
+    };
   },
 };
 
-export default nanp;
+export default decorator;

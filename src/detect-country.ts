@@ -1,6 +1,6 @@
 import ICountry from "./country";
-import countryCodeToDialingCode from "./country-code-to-dialing-code.json";
-import dialingCodeToCountryCode from "./dialing-code-to-country-code.json";
+import countryCodeToDialingCode from "./data/country-code-to-dialing-code.json";
+import dialingCodeToCountryCode from "./data/dialing-code-to-country-code.json";
 
 export const getPotentialCountryCodeDigits = (phoneNumber: string): string => {
   return phoneNumber.charAt(0) === "+" ? phoneNumber.slice(1, 7) : phoneNumber.slice(0, 6);
