@@ -3,5 +3,5 @@ node_js:
   - "8"
 script:
   - yarn lint
-  - yarn test
+  - yarn test-ci
 cache: yarn
