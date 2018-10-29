@@ -13,8 +13,8 @@ const decorator: IDecorator = {
     }
 
     return {
-      local: localNumber,
       international: `+1 ${localNumber}`,
+      local: localNumber,
     };
   },
 };

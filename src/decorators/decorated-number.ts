@@ -1,4 +1,4 @@
-export default interface DecoratedNumber {
-  local: string,
-  international: string,
-};
+export default interface IDecoratedNumber {
+  local: string;
+  international: string;
+}

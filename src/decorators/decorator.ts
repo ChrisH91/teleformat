@@ -1,5 +1,5 @@
-import DecoratedNumber from "./decorated-number";
+import IDecoratedNumber from "./decorated-number";
 
 export default interface IDecorator {
-  decorate(phoneNumber: string): DecoratedNumber;
+  decorate(phoneNumber: string): IDecoratedNumber;
 }

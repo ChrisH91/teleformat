@@ -1,12 +1,12 @@
+import au from "./au";
 import IDecoratorList from "./decorator-list";
-import nanp from "./nanp";
 import gb from "./gb";
-import au from './au';
+import nanp from "./nanp";
 
 const decorators: IDecoratorList = {
-  NANP: nanp,
-  GB: gb,
   AU: au,
+  GB: gb,
+  NANP: nanp,
 };
 
 export default decorators;
