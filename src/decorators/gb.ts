@@ -1,53 +1,99 @@
-import IDecorator from "./decorator";
 
-const sixDigitAreaCodes = [
-  "013873",
-  "015242",
-  "015394",
-  "015395",
-  "015396",
-  "016973",
-  "016974",
-  "016977",
-  "016977",
-  "017683",
-  "017684",
-  "017687",
-  "019467",
+import DecoratedNumber from "../decorated-number";
+import IDecorator from "../decorator";
+import {
+  countryCodePart,
+  decorativePart,
+  internationalDecorativePart,
+  numberPart,
+} from "../number-part";
+
+const threeDigitAreaCodesStartingDigits = [
+  "3",
+  "8",
+  "9",
+];
+
+const fiveDigitAreaCodes = [
+  "13873",
+  "15242",
+  "15394",
+  "15395",
+  "15396",
+  "16973",
+  "16974",
+  "16977",
+  "16977",
+  "17683",
+  "17684",
+  "17687",
+  "19467",
 ];
 
 const decorator: IDecorator = {
   decorate(phoneNumber: string) {
-    let localNumber;
+    const decoratedNumber = new DecoratedNumber([
+      internationalDecorativePart("+"),
+      countryCodePart("4"),
+      countryCodePart("4"),
+      internationalDecorativePart(" "),
+    ]);
 
-    if (phoneNumber.substring(2, 4) === "02") {
-      localNumber = `${phoneNumber.substring(3, 5)}` +
-        `${phoneNumber.length > 3 ? ` ${phoneNumber.substring(5, 9)}` : ""}` +
-        `${phoneNumber.length > 5 ? ` ${phoneNumber.substring(9)}` : ""}`;
-    } else if (
-      phoneNumber.substring(2, 4) === "03" ||
-      phoneNumber.substring(2, 4) === "08" ||
-      phoneNumber.substring(2, 4) === "09" ||
-      phoneNumber.substring(2, 4) === "08" ||
-      phoneNumber.substring(2, 5) === "011" ||
-      (phoneNumber.substring(2, 4) === "01" && phoneNumber.charAt(5) === "1")
-    ) {
-      localNumber =
-        `${phoneNumber.length > 3 ? `${phoneNumber.substring(3, 6)}` : ""}` +
-        `${phoneNumber.length > 5 ? ` ${phoneNumber.substring(6, 9)}` : ""}` +
-        `${phoneNumber.length > 9 ? ` ${phoneNumber.substring(9)}` : ""}`;
-    } else if (sixDigitAreaCodes.indexOf(phoneNumber.substring(2, 8)) !== -1) {
-      localNumber = `${phoneNumber.substring(3, 8)} ${phoneNumber.substring(8)}`;
-    } else {
-      localNumber =
-        `${phoneNumber.length > 3 ? `${phoneNumber.substring(3, 7)}` : ""}` +
-        `${phoneNumber.length > 6 ? ` ${phoneNumber.substring(7)}` : ""}`;
+    if (phoneNumber.indexOf("44") === 0) {
+      phoneNumber = phoneNumber.substring(2);
     }
 
-    return {
-      international: `+44 (0) ${localNumber}`,
-      local: `0${localNumber}`,
-    };
+    if (phoneNumber.length === 0) {
+      return decoratedNumber;
+    }
+
+    decoratedNumber.parts.push(
+      internationalDecorativePart("("),
+      decorativePart("0"),
+      internationalDecorativePart(")"),
+      internationalDecorativePart(" "),
+    );
+
+    if (phoneNumber.charAt(0) === "0") {
+      phoneNumber = phoneNumber.substring(1);
+    }
+
+    let areaCodeLength = 4;
+    let localCodeLength: number | null = null;
+
+    const firstDigit = phoneNumber.charAt(0);
+    const thirdDigit = phoneNumber.charAt(2);
+
+    const firstTwoDigits = phoneNumber.substring(0, 1);
+    const firstFiveDigits = phoneNumber.substring(0, 5);
+
+    if (firstDigit === "2") {
+      areaCodeLength = 2;
+      localCodeLength = 4;
+    } else if (
+      threeDigitAreaCodesStartingDigits.indexOf(firstDigit) !== -1 ||
+      firstTwoDigits === "11" ||
+      firstDigit === "1" && thirdDigit === "1"
+    ) {
+      areaCodeLength = 3;
+      localCodeLength = 3;
+    } else if (fiveDigitAreaCodes.indexOf(firstFiveDigits) !== -1) {
+      areaCodeLength = 5;
+    }
+
+    for (let i = 0; i < phoneNumber.length; ++i) {
+      const digit = phoneNumber[i];
+      decoratedNumber.parts.push(numberPart(digit));
+
+      if (
+        i === areaCodeLength - 1 ||
+        localCodeLength && i === areaCodeLength + localCodeLength - 1
+      ) {
+        decoratedNumber.parts.push(decorativePart(" "));
+      }
+    }
+
+    return decoratedNumber;
   },
 };
 

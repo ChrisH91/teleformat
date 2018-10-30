@@ -1,52 +1,73 @@
-import IDecorator from "./decorator";
+import DecoratedNumber from "../decorated-number";
+import IDecorator from "../decorator";
+import {
+  countryCodePart,
+  decorativePart,
+  internationalDecorativePart,
+  localDecorativePart,
+  numberPart,
+} from "../number-part";
+
+const mobileAreaCodes = [
+  "4",
+  "5",
+];
 
 const decorator: IDecorator = {
   decorate(phoneNumber: string) {
-    let localNumber;
-    let internationalNumber;
+    const decoratedNumber = new DecoratedNumber([
+      internationalDecorativePart("+"),
+      countryCodePart("6"),
+      countryCodePart("1"),
+      internationalDecorativePart(" "),
+    ]);
 
-    const isMobile = phoneNumber.substring(3, 4) === "4";
+    if (phoneNumber.indexOf("61") === 0) {
+      phoneNumber = phoneNumber.substring(2);
+    }
 
-    if (phoneNumber.length < 4) {
-      localNumber = `${phoneNumber.substring(2)}`;
-      internationalNumber = `+61 ${phoneNumber.substring(2)}`;
-    } else if (isMobile) {
-      if (phoneNumber.length < 7) {
-        const suffix = phoneNumber.substring(4);
-        localNumber = `04${suffix}`;
-        internationalNumber = `+61 4${suffix}`;
-      } else if (phoneNumber.length < 9) {
-        const suffix = `${phoneNumber.substring(4, 6)} ${phoneNumber.substring(6, 9)}`;
-        localNumber = `04${suffix}`;
-        internationalNumber = `+61 4${suffix}`;
-      } else {
-        const suffix = `${phoneNumber.substring(4, 6)} ` +
-          `${phoneNumber.substring(6, 9)} ` +
-          `${phoneNumber.substring(9)}`;
-        localNumber = `04${suffix}`;
-        internationalNumber = `+61 4${suffix}`;
+    if (phoneNumber.length === 0) {
+      return decoratedNumber;
+    }
+
+    if (phoneNumber.charAt(0) === "0") {
+      if (phoneNumber.length === 1) {
+        decoratedNumber.parts.push(decorativePart("0"));
+        return decoratedNumber;
       }
-    } else {
-      if (phoneNumber.length < 5) {
-        localNumber = `0${phoneNumber.substring(3)} `;
-        internationalNumber = `+61 (0${phoneNumber.substring(3)}) `;
-      } else if (phoneNumber.length < 8) {
-        localNumber = `0${phoneNumber.substring(3, 4)} ${phoneNumber.substring(4)}`;
-        internationalNumber = `+61 (0${phoneNumber.substring(3, 4)}) ${phoneNumber.substring(4)}`;
-      } else {
-        localNumber = `0${phoneNumber.substring(3, 4)} ` +
-          `${phoneNumber.substring(4, 8)} ` +
-          `${phoneNumber.substring(8)}`;
-        internationalNumber = `+61 (0${phoneNumber.substring(3, 4)}) ` +
-          `${phoneNumber.substring(4, 8)} ` +
-          `${phoneNumber.substring(8)}`;
+
+      phoneNumber = phoneNumber.substring(1);
+    }
+
+    const isMobile = mobileAreaCodes.indexOf(phoneNumber.charAt(0)) !== -1;
+
+    for (let i = 0; i < phoneNumber.length; ++i) {
+      const digit = phoneNumber[i];
+
+      if (i === 0) {
+        if (isMobile) {
+          decoratedNumber.parts.push(localDecorativePart(0));
+        } else {
+          decoratedNumber.parts.push(
+            decorativePart("("),
+            decorativePart("0"),
+            numberPart(digit),
+            decorativePart(")"),
+            decorativePart(" "),
+          );
+
+          continue;
+        }
+      }
+
+      decoratedNumber.parts.push(numberPart(digit));
+
+      if (isMobile && (i === 2 || i === 5) || !isMobile && (i === 4)) {
+        decoratedNumber.parts.push(decorativePart(" "));
       }
     }
 
-    return {
-      international: internationalNumber,
-      local: localNumber,
-    };
+    return decoratedNumber;
   },
 };
 
