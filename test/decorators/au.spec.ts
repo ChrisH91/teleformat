@@ -76,5 +76,24 @@ describe("Decorators", () => {
         expect(decorator.decorate("61043344455").local).toBe("0433 444 55");
       });
     });
+
+    describe("e164", () => {
+      it("returns full number", () => {
+        expect(decorator.decorate("610233334444").e164).toBe("61233334444");
+      });
+
+      it("returns partial number", () => {
+        expect(decorator.decorate("61").e164).toBe("61");
+        expect(decorator.decorate("610").e164).toBe("61");
+        expect(decorator.decorate("6102").e164).toBe("612");
+        expect(decorator.decorate("61023").e164).toBe("6123");
+        expect(decorator.decorate("610233").e164).toBe("61233");
+        expect(decorator.decorate("6102333").e164).toBe("612333");
+        expect(decorator.decorate("61023333").e164).toBe("6123333");
+        expect(decorator.decorate("610233334").e164).toBe("61233334");
+        expect(decorator.decorate("6102333344").e164).toBe("612333344");
+        expect(decorator.decorate("61023333444").e164).toBe("6123333444");
+      });
+    });
   });
 });

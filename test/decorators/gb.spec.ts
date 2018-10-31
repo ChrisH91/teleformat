@@ -163,5 +163,79 @@ describe("Decorators", () => {
         expect(decorator.decorate("441888").local).toBe("01888 ");
       });
     });
+
+    describe("e164", () => {
+      it("returns full number", () => {
+        expect(decorator.decorate("4402123456789").e164).toBe("442123456789");
+        expect(decorator.decorate("4403331112222").e164).toBe("443331112222");
+        expect(decorator.decorate("4408001112222").e164).toBe("448001112222");
+        expect(decorator.decorate("4409001112222").e164).toBe("449001112222");
+        expect(decorator.decorate("4401112223333").e164).toBe("441112223333");
+        expect(decorator.decorate("4401312223333").e164).toBe("441312223333");
+        expect(decorator.decorate("4401512223333").e164).toBe("441512223333");
+        expect(decorator.decorate("4401387399999").e164).toBe("441387399999");
+        expect(decorator.decorate("4401697499999").e164).toBe("441697499999");
+        expect(decorator.decorate("4401768799999").e164).toBe("441768799999");
+        expect(decorator.decorate("4407777888888").e164).toBe("447777888888");
+        expect(decorator.decorate("4405555222222").e164).toBe("445555222222");
+        expect(decorator.decorate("4401888999999").e164).toBe("441888999999");
+
+        expect(decorator.decorate("442123456789").e164).toBe("442123456789");
+        expect(decorator.decorate("443331112222").e164).toBe("443331112222");
+        expect(decorator.decorate("448001112222").e164).toBe("448001112222");
+        expect(decorator.decorate("449001112222").e164).toBe("449001112222");
+        expect(decorator.decorate("441112223333").e164).toBe("441112223333");
+        expect(decorator.decorate("441312223333").e164).toBe("441312223333");
+        expect(decorator.decorate("441512223333").e164).toBe("441512223333");
+        expect(decorator.decorate("441387399999").e164).toBe("441387399999");
+        expect(decorator.decorate("441697499999").e164).toBe("441697499999");
+        expect(decorator.decorate("441768799999").e164).toBe("441768799999");
+        expect(decorator.decorate("447777888888").e164).toBe("447777888888");
+        expect(decorator.decorate("445555222222").e164).toBe("445555222222");
+        expect(decorator.decorate("441888999999").e164).toBe("441888999999");
+      });
+
+      it("returns partial number", () => {
+        expect(decorator.decorate("44").e164).toBe("44");
+        expect(decorator.decorate("440").e164).toBe("44");
+        expect(decorator.decorate("4401").e164).toBe("441");
+        expect(decorator.decorate("44021").e164).toBe("4421");
+        expect(decorator.decorate("440212345").e164).toBe("44212345");
+        expect(decorator.decorate("440333").e164).toBe("44333");
+        expect(decorator.decorate("440333111").e164).toBe("44333111");
+        expect(decorator.decorate("440800").e164).toBe("44800");
+        expect(decorator.decorate("440800111").e164).toBe("44800111");
+        expect(decorator.decorate("440900").e164).toBe("44900");
+        expect(decorator.decorate("440111").e164).toBe("44111");
+        expect(decorator.decorate("440111222").e164).toBe("44111222");
+        expect(decorator.decorate("440131").e164).toBe("44131");
+        expect(decorator.decorate("44016974").e164).toBe("4416974");
+        expect(decorator.decorate("4407777").e164).toBe("447777");
+        expect(decorator.decorate("4401387").e164).toBe("441387");
+        expect(decorator.decorate("44013873").e164).toBe("4413873");
+        expect(decorator.decorate("4407777").e164).toBe("447777");
+        expect(decorator.decorate("4405555").e164).toBe("445555");
+        expect(decorator.decorate("4401888").e164).toBe("441888");
+
+        expect(decorator.decorate("441").e164).toBe("441");
+        expect(decorator.decorate("4421").e164).toBe("4421");
+        expect(decorator.decorate("44212345").e164).toBe("44212345");
+        expect(decorator.decorate("44333").e164).toBe("44333");
+        expect(decorator.decorate("44333111").e164).toBe("44333111");
+        expect(decorator.decorate("44800").e164).toBe("44800");
+        expect(decorator.decorate("44800111").e164).toBe("44800111");
+        expect(decorator.decorate("44900").e164).toBe("44900");
+        expect(decorator.decorate("44111").e164).toBe("44111");
+        expect(decorator.decorate("44111222").e164).toBe("44111222");
+        expect(decorator.decorate("44131").e164).toBe("44131");
+        expect(decorator.decorate("4416974").e164).toBe("4416974");
+        expect(decorator.decorate("447777").e164).toBe("447777");
+        expect(decorator.decorate("441387").e164).toBe("441387");
+        expect(decorator.decorate("4413873").e164).toBe("4413873");
+        expect(decorator.decorate("447777").e164).toBe("447777");
+        expect(decorator.decorate("445555").e164).toBe("445555");
+        expect(decorator.decorate("441888").e164).toBe("441888");
+      });
+    });
   });
 });
