@@ -51,5 +51,26 @@ describe("Decorators", () => {
         expect(decorator.decorate("15551253658111").local).toBe("(555) 125-3658111");
       });
     });
+
+    describe("e164", () => {
+      it("returns full number", () => {
+        expect(decorator.decorate("15551253658").e164).toBe("15551253658");
+      });
+
+      it("returns partial number", () => {
+        expect(decorator.decorate("1").e164).toBe("1");
+        expect(decorator.decorate("15").e164).toBe("15");
+        expect(decorator.decorate("155").e164).toBe("155");
+        expect(decorator.decorate("1555").e164).toBe("1555");
+        expect(decorator.decorate("15551").e164).toBe("15551");
+        expect(decorator.decorate("155512").e164).toBe("155512");
+        expect(decorator.decorate("1555125").e164).toBe("1555125");
+        expect(decorator.decorate("15551253").e164).toBe("15551253");
+        expect(decorator.decorate("155512536").e164).toBe("155512536");
+        expect(decorator.decorate("1555125365").e164).toBe("1555125365");
+        expect(decorator.decorate("15551253658").e164).toBe("15551253658");
+        expect(decorator.decorate("15551253658111").e164).toBe("15551253658111");
+      });
+    });
   });
 });
