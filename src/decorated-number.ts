@@ -1,4 +1,8 @@
+import dialingCodeToCountryCode from "./data/dialing-code-to-country-code";
 import INumberPart from "./number-part";
+
+const getFilteredPartsText = (parts: INumberPart[], filter: (p: INumberPart) => boolean) =>
+  parts.filter(filter).map((p) => p.text).join("");
 
 export default class DecoratedNumber {
   public parts: INumberPart[];
@@ -8,14 +12,22 @@ export default class DecoratedNumber {
   }
 
   get international() {
-    return this.parts.filter((p) => p.international).map((p) => p.text).join("");
+    return getFilteredPartsText(this.parts, (p) => p.international);
   }
 
   get local() {
-    return this.parts.filter((p) => p.local).map((p) => p.text).join("");
+    return getFilteredPartsText(this.parts, (p) => p.local);
   }
 
   get e164() {
-    return this.parts.filter((p) => p.e164).map((p) => p.text).join("");
+    return getFilteredPartsText(this.parts, (p) => p.e164);
+  }
+
+  get dialingCode() {
+    return getFilteredPartsText(this.parts, (p) => p.dialingCode);
+  }
+
+  get countryCode() {
+    return dialingCodeToCountryCode[this.dialingCode];
   }
 }

@@ -15,12 +15,14 @@ const decorator: IDecorator = {
       internationalDecorativePart(" "),
     ]);
 
-    const stripCountryDigit = phoneNumber.substring(1);
+    if (phoneNumber.charAt(0) === "1") {
+      phoneNumber = phoneNumber.substring(1);
+    }
 
-    for (let i = 0; i < stripCountryDigit.length; ++i) {
-      const digit = stripCountryDigit[i];
+    for (let i = 0; i < phoneNumber.length; ++i) {
+      const digit = phoneNumber[i];
 
-      if (i === 0 && stripCountryDigit.length > 2) {
+      if (i === 0 && phoneNumber.length > 2) {
         decoratedNumber.parts.push(decorativePart("("));
       }
 

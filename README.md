@@ -42,5 +42,7 @@ This returns an object of the form:
   international: '+44 (0) 7777 888888',
   local: '07777 888888',
   e164: '447777888888',
+  dialingCode: '44',
+  countryCode: 'GB'
 }
 ```
