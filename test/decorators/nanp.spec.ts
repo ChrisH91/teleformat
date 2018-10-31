@@ -2,12 +2,21 @@ import decorator from "../../src/decorators/nanp";
 
 describe("Decorators", () => {
   describe("NANP", () => {
+    it("normalizes numbers", () => {
+      expect(decorator.decorate("").international).toBe("+1 ");
+      expect(decorator.decorate("").local).toBe("");
+
+      expect(decorator.decorate("1754").international).toBe("+1 (754) ");
+      expect(decorator.decorate("1754").local).toBe("(754) ");
+    });
+
     describe("international", () => {
       it("decorates full number", () => {
         expect(decorator.decorate("15551253658").international).toBe("+1 (555) 125-3658");
       });
 
       it("decorates partial number", () => {
+        expect(decorator.decorate("1").international).toBe("+1 ");
         expect(decorator.decorate("15").international).toBe("+1 5");
         expect(decorator.decorate("155").international).toBe("+1 55");
         expect(decorator.decorate("1555").international).toBe("+1 (555) ");
@@ -28,6 +37,7 @@ describe("Decorators", () => {
       });
 
       it("decorates partial number", () => {
+        expect(decorator.decorate("1").local).toBe("");
         expect(decorator.decorate("15").local).toBe("5");
         expect(decorator.decorate("155").local).toBe("55");
         expect(decorator.decorate("1555").local).toBe("(555) ");

@@ -1,9 +1,9 @@
+import IDecorator from "../decorator";
 import au from "./au";
-import IDecoratorList from "./decorator-list";
 import gb from "./gb";
 import nanp from "./nanp";
 
-const decorators: IDecoratorList = {
+const decorators: { [countryCode: string]: IDecorator } = {
   AU: au,
   GB: gb,
   NANP: nanp,

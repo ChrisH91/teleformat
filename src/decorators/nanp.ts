@@ -1,21 +1,42 @@
-import IDecorator from "./decorator";
+import DecoratedNumber from "../decorated-number";
+import IDecorator from "../decorator";
+import {
+  countryCodePart,
+  decorativePart,
+  internationalDecorativePart,
+  numberPart,
+} from "../number-part";
 
 const decorator: IDecorator = {
   decorate(phoneNumber: string) {
-    let localNumber;
+    const decoratedNumber = new DecoratedNumber([
+      internationalDecorativePart("+"),
+      countryCodePart("1"),
+      internationalDecorativePart(" "),
+    ]);
 
-    if (phoneNumber.length < 4) {
-      localNumber = `${phoneNumber.substring(1)}`;
-    } else if (phoneNumber.length < 7) {
-      localNumber = `(${phoneNumber.substring(1, 4)}) ${phoneNumber.substring(4)}`;
-    } else {
-      localNumber = `(${phoneNumber.substring(1, 4)}) ${phoneNumber.substring(4, 7)}-${phoneNumber.substring(7)}`;
+    const stripCountryDigit = phoneNumber.substring(1);
+
+    for (let i = 0; i < stripCountryDigit.length; ++i) {
+      const digit = stripCountryDigit[i];
+
+      if (i === 0 && stripCountryDigit.length > 2) {
+        decoratedNumber.parts.push(decorativePart("("));
+      }
+
+      decoratedNumber.parts.push(numberPart(digit));
+
+      if (i === 2) {
+        decoratedNumber.parts.push(decorativePart(")"));
+        decoratedNumber.parts.push(decorativePart(" "));
+      }
+
+      if (i === 5) {
+        decoratedNumber.parts.push(decorativePart("-"));
+      }
     }
 
-    return {
-      international: `+1 ${localNumber}`,
-      local: localNumber,
-    };
+    return decoratedNumber;
   },
 };
 
