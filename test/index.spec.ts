@@ -25,5 +25,9 @@ describe("teleformat", () => {
       expect(teleformat.decorate("61212345678").international).toBe("+61 (02) 1234 5678");
       expect(teleformat.decorate("61212345678").local).toBe("(02) 1234 5678");
     });
+
+    it("uses unknown decorator for unknown country codes", () => {
+      expect(teleformat.decorate("37512345").international).toBe("+375 12345");
+    });
   });
 });
