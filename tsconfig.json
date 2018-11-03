@@ -3,7 +3,7 @@
     "outDir": "./dist/",
     "sourceMap": true,
     "strictNullChecks": true,
-    "module": "CommonJS",
+    "module": "umd",
     "target": "es5",
     "allowJs": false,
     "esModuleInterop": true,
