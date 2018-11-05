@@ -27,7 +27,12 @@ export default class DecoratedNumber {
     return getFilteredPartsText(this.parts, (p) => p.dialingCode);
   }
 
+  get areaCode() {
+    return getFilteredPartsText(this.parts, (p) => p.areaCode);
+  }
+
   get countryCode() {
-    return dialingCodeToCountryCode[this.dialingCode];
+    return dialingCodeToCountryCode[`${this.dialingCode}${this.areaCode}`] ||
+      dialingCodeToCountryCode[this.dialingCode];
   }
 }

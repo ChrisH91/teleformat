@@ -1,6 +1,7 @@
 import DecoratedNumber from "../decorated-number";
 import IDecorator from "../decorator";
 import {
+  areaCodePart,
   countryCodePart,
   decorativePart,
   internationalDecorativePart,
@@ -26,7 +27,11 @@ const decorator: IDecorator = {
         decoratedNumber.parts.push(decorativePart("("));
       }
 
-      decoratedNumber.parts.push(numberPart(digit));
+      if (i >= 0 && i <= 2) {
+        decoratedNumber.parts.push(areaCodePart(digit));
+      } else {
+        decoratedNumber.parts.push(numberPart(digit));
+      }
 
       if (i === 2) {
         decoratedNumber.parts.push(decorativePart(")"));
