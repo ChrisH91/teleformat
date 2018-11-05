@@ -72,5 +72,12 @@ describe("Decorators", () => {
         expect(decorator.decorate("15551253658111").e164).toBe("15551253658111");
       });
     });
+
+    test("country code", () => {
+      expect(decorator.decorate("1").countryCode).toBe("NANP");
+      expect(decorator.decorate("1415").countryCode).toBe("US");
+      expect(decorator.decorate("1306").countryCode).toBe("CA");
+      expect(decorator.decorate("1441").countryCode).toBe("BM");
+    });
   });
 });
