@@ -10,11 +10,16 @@ describe("teleformat", () => {
       expect(teleformat.decorate("1999888").countryCode).toBe("NANP");
     });
 
-    it("returns correct decorated number with explicit country", () => {
+    it("returns correct e164 with explicit country", () => {
       expect(teleformat.decorate("5559990000", "NANP").e164).toBe("15559990000");
       expect(teleformat.decorate("15559990000", "NANP").e164).toBe("15559990000");
-      expect(teleformat.decorate("447555666666", "GB").e164).toBe("447555666666");
       expect(teleformat.decorate("07555666666", "GB").e164).toBe("447555666666");
+
+      expect(teleformat.decorate("423", "NO").countryCode).toBe("NO");
+      expect(teleformat.decorate("423", "NO").dialingCode).toBe("47");
+      expect(teleformat.decorate("423", "NO").local).toBe("423");
+      expect(teleformat.decorate("423", "NO").international).toBe("+47 423");
+      expect(teleformat.decorate("423", "NO").e164).toBe("47423");
     });
 
     it("+ overrides explicit country code", () => {
