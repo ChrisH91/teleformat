@@ -12,10 +12,14 @@ export default {
     let country: ICountry | null;
 
     if (phoneNumber.charAt(0) !== "+" && countryCode && countryCodeToDialingCode[countryCode]) {
+      const dialingCode = countryCodeToDialingCode[countryCode];
+
+      phoneNumber = `${dialingCode}${phoneNumber}`;
       country = {
         countryCode,
-        dialingCode: countryCodeToDialingCode[countryCode],
+        dialingCode,
       };
+
     } else {
       country = detectCountry(phoneNumber);
     }

@@ -16,6 +16,14 @@ const decorator: IDecorator = {
       internationalDecorativePart(" "),
     ]);
 
+    // In NANP countries users will often type the local number with a precending 1, in normalizng
+    // the data to be passed through to the decorator we always prepend the country code, this can
+    // result in cases where the user has the country code '1' and the trunk no '1' at the start
+    // of their input. We'll strip it away twice. No local NANP number can start with 1.
+    if (phoneNumber.charAt(0) === "1") {
+      phoneNumber = phoneNumber.substring(1);
+    }
+
     if (phoneNumber.charAt(0) === "1") {
       phoneNumber = phoneNumber.substring(1);
     }
