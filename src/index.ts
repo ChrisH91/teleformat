@@ -24,7 +24,7 @@ export default {
       country = detectCountry(phoneNumber);
     }
 
-    const normalizedNumber = phoneNumber.replace(/\D/g, "");
+    const normalizedNumber = phoneNumber.replace(/[^\dx,]/g, "");
 
     if (!country || !decorators[country.countryCode]) {
       return decorators.unknown.decorate(normalizedNumber);
