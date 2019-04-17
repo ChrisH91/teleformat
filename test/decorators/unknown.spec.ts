@@ -13,6 +13,10 @@ describe("Decorators", () => {
       it("handles unknown country code", () => {
         expect(decorator.decorate("999123456").international).toBe("+999123456");
       });
+
+      it("handles extensions", () => {
+        expect(decorator.decorate("999123456x123").international).toBe("+999123456 ext. 123");
+      });
     });
 
     describe("local", () => {
@@ -25,6 +29,10 @@ describe("Decorators", () => {
       it("handles unknown country code", () => {
         expect(decorator.decorate("999123456").local).toBe("999123456");
       });
+
+      it("handles extensions", () => {
+        expect(decorator.decorate("999123456x123").local).toBe("999123456 ext. 123");
+      });
     });
 
     describe("e164", () => {
@@ -36,6 +44,10 @@ describe("Decorators", () => {
 
       it("handles unknown country code", () => {
         expect(decorator.decorate("999123456").e164).toBe("999123456");
+      });
+
+      it("handles extensions", () => {
+        expect(decorator.decorate("999123456x123").e164).toBe("999123456x123");
       });
     });
   });

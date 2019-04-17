@@ -4,6 +4,8 @@ import {
   areaCodePart,
   countryCodePart,
   decorativePart,
+  extensionDecorativePart,
+  extensionPart,
   internationalDecorativePart,
   numberPart,
 } from "../number-part";
@@ -28,6 +30,8 @@ const decorator: IDecorator = {
       phoneNumber = phoneNumber.substring(1);
     }
 
+    let inExtension = false;
+
     for (let i = 0; i < phoneNumber.length; ++i) {
       const digit = phoneNumber[i];
 
@@ -37,6 +41,11 @@ const decorator: IDecorator = {
 
       if (i >= 0 && i <= 2) {
         decoratedNumber.parts.push(areaCodePart(digit));
+      } else if (digit === "x") {
+        inExtension = true;
+        decoratedNumber.parts.push(extensionDecorativePart(" ext. "));
+      } else if (inExtension) {
+        decoratedNumber.parts.push(extensionPart(digit));
       } else {
         decoratedNumber.parts.push(numberPart(digit));
       }

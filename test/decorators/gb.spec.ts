@@ -47,6 +47,17 @@ describe("Decorators", () => {
         expect(decorator.decorate("441888999999").international).toBe("+44 (0) 1888 999999");
       });
 
+      it("decorates extensions", () => {
+        expect(decorator.decorate("4407777888888x123").international)
+          .toBe("+44 (0) 7777 888888 ext. 123");
+        expect(decorator.decorate("4407777888888x123,456").international)
+          .toBe("+44 (0) 7777 888888 ext. 123,456");
+        expect(decorator.decorate("4407777888888x123,456,789").international)
+          .toBe("+44 (0) 7777 888888 ext. 123,456,789");
+        expect(decorator.decorate("4407777888888x,,,,3").international)
+          .toBe("+44 (0) 7777 888888 ext. ,,,,3");
+      });
+
       it("decorates partial number", () => {
         expect(decorator.decorate("44").international).toBe("+44 ");
         expect(decorator.decorate("440").international).toBe("+44 (0) ");
@@ -121,6 +132,17 @@ describe("Decorators", () => {
         expect(decorator.decorate("441888999999").local).toBe("01888 999999");
       });
 
+      it("decorates extensions", () => {
+        expect(decorator.decorate("442123456789x123").local)
+          .toBe("021 2345 6789 ext. 123");
+        expect(decorator.decorate("442123456789x123,456").local)
+          .toBe("021 2345 6789 ext. 123,456");
+        expect(decorator.decorate("442123456789x123,456,789").local)
+          .toBe("021 2345 6789 ext. 123,456,789");
+        expect(decorator.decorate("442123456789x,,,,3").local)
+          .toBe("021 2345 6789 ext. ,,,,3");
+      });
+
       it("decorates partial number", () => {
         expect(decorator.decorate("44").local).toBe("");
         expect(decorator.decorate("440").local).toBe("0");
@@ -193,6 +215,17 @@ describe("Decorators", () => {
         expect(decorator.decorate("447777888888").e164).toBe("447777888888");
         expect(decorator.decorate("445555222222").e164).toBe("445555222222");
         expect(decorator.decorate("441888999999").e164).toBe("441888999999");
+      });
+
+      it("decorates extensions", () => {
+        expect(decorator.decorate("4402123456789x123").e164)
+          .toBe("442123456789x123");
+        expect(decorator.decorate("4402123456789x123,456").e164)
+          .toBe("442123456789x123,456");
+        expect(decorator.decorate("4402123456789x123,456,789").e164)
+          .toBe("442123456789x123,456,789");
+        expect(decorator.decorate("4402123456789x,,,,3").e164)
+          .toBe("442123456789x,,,,3");
       });
 
       it("returns partial number", () => {

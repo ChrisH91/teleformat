@@ -28,9 +28,9 @@ describe("teleformat", () => {
 
     it("returns decorated numbers", () => {
       expect(teleformat.decorate("61212345678").international).toBe("+61 (02) 1234 5678");
-      expect(teleformat.decorate("61212345678x123").international).toBe("+61 (02) 1234 5678x123");
-      expect(teleformat.decorate("15551112222x123").international).toBe("+1 (555) 111-2222x123");
-      expect(teleformat.decorate("1555111df2222x,246").international).toBe("+1 (555) 111-2222x,246");
+      expect(teleformat.decorate("61212345678x123").international).toBe("+61 (02) 1234 5678 ext. 123");
+      expect(teleformat.decorate("15551112222x123").international).toBe("+1 (555) 111-2222 ext. 123");
+      expect(teleformat.decorate("1555111df2222x,246").international).toBe("+1 (555) 111-2222 ext. ,246");
       expect(teleformat.decorate("61212345678").local).toBe("(02) 1234 5678");
     });
 

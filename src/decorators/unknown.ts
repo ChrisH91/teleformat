@@ -3,6 +3,8 @@ import IDecorator from "../decorator";
 import detectCountry from "../detect-country";
 import {
   countryCodePart,
+  extensionDecorativePart,
+  extensionPart,
   internationalDecorativePart,
   numberPart,
 } from "../number-part";
@@ -27,8 +29,17 @@ const decorator: IDecorator = {
       }
     }
 
+    let isExtension = false;
+
     for (const digit of phoneNumber) {
-      decoratedNumber.parts.push(numberPart(digit));
+      if (digit === "x") {
+        decoratedNumber.parts.push(extensionDecorativePart(" ext. "));
+        isExtension = true;
+      } else if (isExtension) {
+        decoratedNumber.parts.push(extensionPart(digit));
+      } else {
+        decoratedNumber.parts.push(numberPart(digit));
+      }
     }
 
     return decoratedNumber;
