@@ -10,13 +10,6 @@ export const enum Part {
   Extension = "extension"
 }
 
-const getFilteredPartsText = (
-  parts: INumberPart[],
-  format: Part,
-  filter: (p: INumberPart) => boolean
-) =>
-  parts.filter(filter).map((p) => p.text(format)).join("");
-
 export default class DecoratedNumber {
   public parts: INumberPart[];
 
@@ -24,24 +17,28 @@ export default class DecoratedNumber {
     this.parts = parts;
   }
 
+  private serializeTo(format: Part, filter: (p: INumberPart) => boolean): string {
+    return this.parts.filter(filter).map((p) => p.text(format)).join("");
+  }
+
   get international() {
-    return getFilteredPartsText(this.parts, Part.International, (p) => p.international);
+    return this.serializeTo(Part.International, (p) => p.international);
   }
 
   get local() {
-    return getFilteredPartsText(this.parts, Part.Local, (p) => p.local);
+    return this.serializeTo(Part.Local, (p) => p.local);
   }
 
   get e164() {
-    return getFilteredPartsText(this.parts, Part.E164, (p) => p.e164);
+    return this.serializeTo(Part.E164, (p) => p.e164);
   }
 
   get dialingCode() {
-    return getFilteredPartsText(this.parts, Part.DialingCode, (p) => p.dialingCode);
+    return this.serializeTo(Part.DialingCode, (p) => p.dialingCode);
   }
 
   get areaCode() {
-    return getFilteredPartsText(this.parts, Part.AreaCode, (p) => p.areaCode);
+    return this.serializeTo(Part.AreaCode, (p) => p.areaCode);
   }
 
   get countryCode() {
@@ -50,6 +47,6 @@ export default class DecoratedNumber {
   }
 
   get extension() {
-    return getFilteredPartsText(this.parts, Part.Extension, (p) => p.extension && !p.decorative);
+    return this.serializeTo(Part.Extension, (p) => p.extension && !p.decorative);
   }
 }
