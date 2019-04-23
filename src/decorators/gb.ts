@@ -33,7 +33,10 @@ const fiveDigitAreaCodes = [
 ];
 
 const decorator: IDecorator = {
-  decorate(phoneNumber: string) {
+  decorate(
+    phoneNumber: string,
+    extensionConfig = { decoratedDelimiter: " ext. ", delimiter: "x" }
+  ) {
     const decoratedNumber = new DecoratedNumber([
       internationalDecorativePart("+"),
       countryCodePart("4"),
@@ -88,8 +91,8 @@ const decorator: IDecorator = {
     for (let i = 0; i < phoneNumber.length; ++i) {
       const digit = phoneNumber[i];
 
-      if (digit === "x") {
-        decoratedNumber.parts.push(extensionDecorativePart(" ext. "));
+      if (digit === extensionConfig.delimiter) {
+        decoratedNumber.parts.push(extensionDecorativePart(extensionConfig));
         isExtension = true;
       } else if (isExtension) {
         decoratedNumber.parts.push(extensionPart(digit));

@@ -1,3 +1,6 @@
+import { Part } from "./decorated-number";
+import { IExtensionConfig } from "./extension-config";
+
 export default interface INumberPart {
   areaCode: boolean;
   decorative: boolean;
@@ -6,10 +9,10 @@ export default interface INumberPart {
   extension: boolean;
   international: boolean;
   local: boolean;
-  text: string | ((format: string) => string);
+  text: (format?: string) => string;
 }
 
-export const numberPart = (text): INumberPart => ({
+export const numberPart = (text: string | number): INumberPart => ({
   areaCode: false,
   decorative: false,
   dialingCode: false,
@@ -17,10 +20,10 @@ export const numberPart = (text): INumberPart => ({
   extension: false,
   international: true,
   local: true,
-  text,
+  text: () => text.toString(),
 });
 
-export const extensionPart = (text) => ({
+export const extensionPart = (text: number | string): INumberPart => ({
   areaCode: false,
   decorative: false,
   dialingCode: false,
@@ -28,10 +31,10 @@ export const extensionPart = (text) => ({
   extension: true,
   international: true,
   local: true,
-  text,
+  text: () => text.toString(),
 });
 
-export const extensionDecorativePart = (text) => ({
+export const extensionDecorativePart = (config: IExtensionConfig): INumberPart => ({
   areaCode: false,
   decorative: true,
   dialingCode: false,
@@ -39,10 +42,10 @@ export const extensionDecorativePart = (text) => ({
   extension: true,
   international: true,
   local: true,
-  text: (format) => format === "e164" ? "x" : text,
+  text: (format: Part) => format === Part.E164 ? config.delimiter : config.decoratedDelimiter,
 });
 
-export const countryCodePart = (text) => ({
+export const countryCodePart = (text: string): INumberPart => ({
   areaCode: false,
   decorative: false,
   dialingCode: true,
@@ -50,10 +53,10 @@ export const countryCodePart = (text) => ({
   extension: false,
   international: true,
   local: false,
-  text,
+  text: () => text,
 });
 
-export const areaCodePart = (text) => ({
+export const areaCodePart = (text: string): INumberPart => ({
   areaCode: true,
   decorative: false,
   dialingCode: false,
@@ -61,10 +64,10 @@ export const areaCodePart = (text) => ({
   extension: false,
   international: true,
   local: true,
-  text,
+  text: () => text,
 });
 
-export const decorativePart = (text) => ({
+export const decorativePart = (text: string): INumberPart => ({
   areaCode: false,
   decorative: true,
   dialingCode: false,
@@ -72,10 +75,10 @@ export const decorativePart = (text) => ({
   extension: false,
   international: true,
   local: true,
-  text,
+  text: () => text,
 });
 
-export const localDecorativePart = (text) => ({
+export const localDecorativePart = (text: string | number): INumberPart => ({
   areaCode: false,
   decorative: true,
   dialingCode: false,
@@ -83,10 +86,10 @@ export const localDecorativePart = (text) => ({
   extension: false,
   international: false,
   local: true,
-  text,
+  text: () => text.toString(),
 });
 
-export const internationalDecorativePart = (text) => ({
+export const internationalDecorativePart = (text: string): INumberPart => ({
   areaCode: false,
   decorative: true,
   dialingCode: false,
@@ -94,5 +97,5 @@ export const internationalDecorativePart = (text) => ({
   extension: false,
   international: true,
   local: false,
-  text,
+  text: () => text,
 });

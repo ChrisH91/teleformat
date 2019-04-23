@@ -16,7 +16,10 @@ const mobileAreaCodes = [
 ];
 
 const decorator: IDecorator = {
-  decorate(phoneNumber: string) {
+  decorate(
+    phoneNumber: string,
+    extensionConfig = { decoratedDelimiter: " ext. ", delimiter: "x" }
+  ) {
     const decoratedNumber = new DecoratedNumber([
       internationalDecorativePart("+"),
       countryCodePart("6"),
@@ -63,8 +66,8 @@ const decorator: IDecorator = {
         }
       }
 
-      if (digit === "x") {
-        decoratedNumber.parts.push(extensionDecorativePart(" ext. "));
+      if (digit === extensionConfig.delimiter) {
+        decoratedNumber.parts.push(extensionDecorativePart(extensionConfig));
         isExtension = true;
         continue;
       } else if (isExtension) {

@@ -1,12 +1,21 @@
 import dialingCodeToCountryCode from "./data/dialing-code-to-country-code";
 import INumberPart from "./number-part";
 
+export const enum Part {
+  International = "international",
+  Local = "local",
+  E164 = "e164",
+  AreaCode = "areaCode",
+  DialingCode = "dialingCode",
+  Extension = "extension"
+}
+
 const getFilteredPartsText = (
   parts: INumberPart[],
-  format: string,
+  format: Part,
   filter: (p: INumberPart) => boolean
 ) =>
-  parts.filter(filter).map((p) => typeof p.text === "function" ? p.text(format) : p.text).join("");
+  parts.filter(filter).map((p) => p.text(format)).join("");
 
 export default class DecoratedNumber {
   public parts: INumberPart[];
@@ -16,23 +25,23 @@ export default class DecoratedNumber {
   }
 
   get international() {
-    return getFilteredPartsText(this.parts, "international", (p) => p.international);
+    return getFilteredPartsText(this.parts, Part.International, (p) => p.international);
   }
 
   get local() {
-    return getFilteredPartsText(this.parts, "local", (p) => p.local);
+    return getFilteredPartsText(this.parts, Part.Local, (p) => p.local);
   }
 
   get e164() {
-    return getFilteredPartsText(this.parts, "e164", (p) => p.e164);
+    return getFilteredPartsText(this.parts, Part.E164, (p) => p.e164);
   }
 
   get dialingCode() {
-    return getFilteredPartsText(this.parts, "dialingCode", (p) => p.dialingCode);
+    return getFilteredPartsText(this.parts, Part.DialingCode, (p) => p.dialingCode);
   }
 
   get areaCode() {
-    return getFilteredPartsText(this.parts, "areaCode", (p) => p.areaCode);
+    return getFilteredPartsText(this.parts, Part.AreaCode, (p) => p.areaCode);
   }
 
   get countryCode() {
@@ -41,6 +50,6 @@ export default class DecoratedNumber {
   }
 
   get extension() {
-    return getFilteredPartsText(this.parts, "extension", (p) => p.extension && !p.decorative);
+    return getFilteredPartsText(this.parts, Part.Extension, (p) => p.extension && !p.decorative);
   }
 }

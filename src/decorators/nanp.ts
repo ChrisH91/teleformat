@@ -11,7 +11,10 @@ import {
 } from "../number-part";
 
 const decorator: IDecorator = {
-  decorate(phoneNumber: string) {
+  decorate(
+    phoneNumber: string,
+    extensionConfig = { decoratedDelimiter: " ext. ", delimiter: "x" }
+  ) {
     const decoratedNumber = new DecoratedNumber([
       internationalDecorativePart("+"),
       countryCodePart("1"),
@@ -41,9 +44,9 @@ const decorator: IDecorator = {
 
       if (i >= 0 && i <= 2) {
         decoratedNumber.parts.push(areaCodePart(digit));
-      } else if (digit === "x") {
+      } else if (digit === extensionConfig.delimiter) {
         inExtension = true;
-        decoratedNumber.parts.push(extensionDecorativePart(" ext. "));
+        decoratedNumber.parts.push(extensionDecorativePart(extensionConfig));
       } else if (inExtension) {
         decoratedNumber.parts.push(extensionPart(digit));
       } else {
