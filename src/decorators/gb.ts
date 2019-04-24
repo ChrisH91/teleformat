@@ -4,6 +4,8 @@ import IDecorator from "../decorator";
 import {
   countryCodePart,
   decorativePart,
+  extensionDecorativePart,
+  extensionPart,
   internationalDecorativePart,
   numberPart,
 } from "../number-part";
@@ -31,7 +33,10 @@ const fiveDigitAreaCodes = [
 ];
 
 const decorator: IDecorator = {
-  decorate(phoneNumber: string) {
+  decorate(
+    phoneNumber: string,
+    extensionConfig = { decoratedDelimiter: " ext. ", delimiter: "x" }
+  ) {
     const decoratedNumber = new DecoratedNumber([
       internationalDecorativePart("+"),
       countryCodePart("4"),
@@ -81,9 +86,19 @@ const decorator: IDecorator = {
       areaCodeLength = 5;
     }
 
+    let isExtension = false;
+
     for (let i = 0; i < phoneNumber.length; ++i) {
       const digit = phoneNumber[i];
-      decoratedNumber.parts.push(numberPart(digit));
+
+      if (digit === extensionConfig.delimiter) {
+        decoratedNumber.parts.push(extensionDecorativePart(extensionConfig));
+        isExtension = true;
+      } else if (isExtension) {
+        decoratedNumber.parts.push(extensionPart(digit));
+      } else {
+        decoratedNumber.parts.push(numberPart(digit));
+      }
 
       if (
         i === areaCodeLength - 1 ||

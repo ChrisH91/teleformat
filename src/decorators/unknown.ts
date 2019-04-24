@@ -3,12 +3,17 @@ import IDecorator from "../decorator";
 import detectCountry from "../detect-country";
 import {
   countryCodePart,
+  extensionDecorativePart,
+  extensionPart,
   internationalDecorativePart,
   numberPart,
 } from "../number-part";
 
 const decorator: IDecorator = {
-  decorate(phoneNumber: string) {
+  decorate(
+    phoneNumber: string,
+    extensionConfig = { decoratedDelimiter: " ext. ", delimiter: "x" }
+  ) {
     const country = detectCountry(phoneNumber);
 
     const decoratedNumber = new DecoratedNumber([
@@ -22,13 +27,20 @@ const decorator: IDecorator = {
 
       decoratedNumber.parts.push(internationalDecorativePart(" "));
 
-      if (phoneNumber.indexOf(country.dialingCode) === 0) {
-        phoneNumber = phoneNumber.substring(country.dialingCode.length);
-      }
+      phoneNumber = phoneNumber.substring(country.dialingCode.length);
     }
 
+    let isExtension = false;
+
     for (const digit of phoneNumber) {
-      decoratedNumber.parts.push(numberPart(digit));
+      if (digit === extensionConfig.delimiter) {
+        decoratedNumber.parts.push(extensionDecorativePart(extensionConfig));
+        isExtension = true;
+      } else if (isExtension) {
+        decoratedNumber.parts.push(extensionPart(digit));
+      } else {
+        decoratedNumber.parts.push(numberPart(digit));
+      }
     }
 
     return decoratedNumber;
